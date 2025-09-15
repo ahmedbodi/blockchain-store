@@ -1,0 +1,89 @@
+manifestVersion: 1.1
+id: plebs-catcoin
+category: bitcoin
+name: Catcoin Node
+version: v2.2.0
+tagline: Catcoin Core Daemon
+description: >-
+  Run your Catcoin node, powered by Catcoin Core v2.2.1, and independently store and validate
+  every single Catcoin transaction with it. Achieve unparalleled
+  privacy by connecting your wallet directly to your node to
+  ensure that your wallet company can’t spy on your transactions,
+  or worse — lie to you.
+
+
+  Plus, transacting with your own node also helps keep the entire
+  Catcoin network decentralized; win-win!
+
+
+  With over 20 advanced settings, you can take control of your node
+  and customize it to your needs. Control how your node connects to
+  other nodes over Tor, clearnet, and I2P, adjust your daily upload
+  limit, set the maximum mempool size, fine-tune its performance,
+  and much more.
+
+
+  Don't trust. Verify. On steroids.
+
+developer: Ahmed Bodiwala
+website: https://github.com/ahmedbodi/blockchain-store
+dependencies: []
+repo: https://github.com/ahmedbodi/blockchain-store
+support: https://github.com/ahmedbodi/blockchain-store/issues
+port: 9332
+path: ""
+gallery: []
+submitter: Ahmed Bodiwala
+submission: https://github.com/ahmedbodi/blockchain-store
+defaultUsername: ""
+defaultPassword: ""
+widgets:
+  - id: "stats"
+    type: "four-stats"
+    refresh: "5s"
+    endpoint: "app:3000/api/widget/stats"
+    link: ""
+    example:
+      type: "four-stats"
+      link: ""
+      items:
+        - title: "Connections"
+          text: "11"
+          subtext: "peers"
+        - title: "Mempool"
+          text: "257"
+          subtext: "MB"
+        - title: "Hashrate"
+          text: "590"
+          subtext: "EH/s"
+        - title: "Blockchain size"
+          text: "600"
+          subtext: "GB"
+  - id: "sync"
+    type: "text-with-progress"
+    refresh: "2s"
+    endpoint: "app:3000/api/widget/sync"
+    link: ""
+    example:
+      type: "text-with-progress"
+      link: ""
+      title: "Blockchain sync"
+      text: "83%"
+      progressLabel: "In progress"
+      progress: 0.83
+backupIgnore:
+  - data/catcoin/blocks
+  - data/catcoin/chainstate
+  - data/catcoin/indexes
+  - data/catcoin/testnet3/blocks
+  - data/catcoin/testnet3/chainstate
+  - data/catcoin/testnet3/indexes
+  - data/catcoin/testnet4/blocks
+  - data/catcoin/testnet4/chainstate
+  - data/catcoin/testnet4/indexes
+  - data/catcoin/signet/blocks
+  - data/catcoin/signet/chainstate
+  - data/catcoin/signet/indexes
+  - data/catcoin/regtest/blocks
+  - data/catcoin/regtest/chainstate
+  - data/catcoin/regtest/indexes
