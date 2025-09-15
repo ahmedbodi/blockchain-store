@@ -20,7 +20,7 @@ set_correct_permissions() {
 }
 
 # We set the correct permissions for any files that may have been created by a previous app running as root:
-set_correct_permissions "${APP_DATA_DIR}/catcoin/umbrel-catcoin.conf"
+set_correct_permissions "${APP_DATA_DIR}/catcoin/plebs-catcoin.conf"
 set_correct_permissions "${APP_DATA_DIR}/catcoin/catcoin.conf"
 set_correct_permissions "${APP_DATA_DIR}/catcoin/catcoin.conf.save"
 # settings.json for any network could have been self-corrected by the old app running under root.
