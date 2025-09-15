@@ -45,8 +45,8 @@ WORKDIR /repo/apps/backend
 
 VOLUME /data
 
-COPY --from=catcoind /bin/catcoind    /usr/local/bin/
-COPY --from=catcoind /bin/catcoin-cli /usr/local/bin/
+COPY --from=catcoind /opt/catcoin-v2.2.0/bin/catcoind    /usr/local/bin/
+COPY --from=catcoind /opt/catcoin-v2.2.0/bin/catcoin-cli /usr/local/bin/
 
 CMD ["npm","run","dev"]
 
@@ -86,8 +86,8 @@ COPY --from=app-builder /repo/libs/settings/dist ./libs/settings/dist
 COPY --from=app-builder /repo/libs/shared-types/dist ./libs/shared-types/dist
 
 # bitcoind binaries
-COPY --from=catcoind /bin/catcoind    /usr/local/bin/
-COPY --from=catcoind /bin/catcoin-cli /usr/local/bin/
+COPY --from=catcoind /opt/catcoin-v2.2.0/bin/catcoind    /usr/local/bin/
+COPY --from=catcoind /opt/catcoin-v2.2.0/bin/catcoin-cli /usr/local/bin/
 
 
 ENV NODE_ENV=production
