@@ -6,7 +6,7 @@ on:
       - master
 
 jobs:
-  build_catcoin:
+  build_umbrel_catcoin:
     runs-on: ubuntu-latest
 
     permissions:
