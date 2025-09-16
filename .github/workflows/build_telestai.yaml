@@ -1,4 +1,4 @@
-name: Build Fairbrix
+name: Build Telestai
 
 on:
   push:
@@ -6,7 +6,7 @@ on:
       - master
 
 jobs:
-  build_fairbrix:
+  build_telestai:
     runs-on: ubuntu-latest
 
     permissions:
@@ -27,7 +27,7 @@ jobs:
         id: meta
         uses: docker/metadata-action@v5
         with:
-          images: ${{ secrets.DOCKER_USERNAME }}/fairbrix
+          images: ${{ secrets.DOCKER_USERNAME }}/telestai
 
       - name: Build and push Docker image
         uses: docker/build-push-action@v5
@@ -36,5 +36,5 @@ jobs:
           push: true
           labels: ${{ steps.meta.outputs.labels }}
           tags: |
-            ${{ secrets.DOCKER_USERNAME }}/fairbrix:v2.0.2
-            ${{ secrets.DOCKER_USERNAME }}/fairbrix:latest
+            ${{ secrets.DOCKER_USERNAME }}/telestai:v2.1.7
+            ${{ secrets.DOCKER_USERNAME }}/telestai:latest
