@@ -42,7 +42,7 @@ RUN apk --no-cache add git
 RUN apk --no-cache add gmp
 RUN apk --no-cache add gmp-dev
 
-ARG MEOWCOIN_VERSION="Meow-v3.0.3"
+ARG MEOWCOIN_VERSION="Meow-v3.0.4"
 ENV MEOWCOIN_VERSION=${MEOWCOIN_VERSION}
 ENV MEOWCOIN_PREFIX=/opt/meowcoin-${MEOWCOIN_VERSION}
 
@@ -94,7 +94,7 @@ RUN apk --no-cache add \
   gmp
 
 ENV MEOWCOIN_DATA=/home/meowcoin/.meowcoin
-ENV MEOWCOIN_VERSION="Meow-v3.0.3"
+ENV MEOWCOIN_VERSION="Meow-v3.0.4"
 ENV MEOWCOIN_PREFIX=/opt/meowcoin-${MEOWCOIN_VERSION}
 ENV PATH=${MEOWCOIN_PREFIX}/bin:$PATH
 

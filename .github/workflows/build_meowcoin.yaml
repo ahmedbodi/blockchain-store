@@ -36,5 +36,5 @@ jobs:
           push: true
           labels: ${{ steps.meta.outputs.labels }}
           tags: |
-            ${{ secrets.DOCKER_USERNAME }}/meowcoin:v3.0.3
+            ${{ secrets.DOCKER_USERNAME }}/meowcoin:v3.0.4
             ${{ secrets.DOCKER_USERNAME }}/meowcoin:latest
