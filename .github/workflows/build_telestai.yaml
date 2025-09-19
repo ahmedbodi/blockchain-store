@@ -32,7 +32,7 @@ jobs:
       - name: Build and push Docker image
         uses: docker/build-push-action@v5
         with:
-          context: ./apps/fairbrix
+          context: ./apps/telestai
           push: true
           labels: ${{ steps.meta.outputs.labels }}
           tags: |
