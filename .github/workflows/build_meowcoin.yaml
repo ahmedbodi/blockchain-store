@@ -1,6 +1,7 @@
 name: Build Meowcoin
 
 on:
+  workflow_dispatch:
   push:
     branches:
       - master
