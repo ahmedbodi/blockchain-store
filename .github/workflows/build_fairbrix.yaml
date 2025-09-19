@@ -1,9 +1,12 @@
 name: Build Fairbrix
 
+
 on:
   push:
     branches:
       - master
+    paths:
+      - 'apps/fairbrix/**'
 
 jobs:
   build_fairbrix:
