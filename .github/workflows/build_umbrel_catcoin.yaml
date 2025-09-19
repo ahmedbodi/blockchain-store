@@ -1,9 +1,12 @@
 name: Build Umbrel Catcoin
 
+
 on:
   push:
     branches:
       - master
+    paths:
+      - 'apps/umbrel-catcoin/**'
 
 jobs:
   build_umbrel_catcoin:
