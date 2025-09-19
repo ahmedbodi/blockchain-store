@@ -4,7 +4,9 @@ on:
   push:
     branches:
       - master
-
+    paths:
+      - 'apps/telestai/**'
+      
 jobs:
   build_telestai:
     runs-on: ubuntu-latest
