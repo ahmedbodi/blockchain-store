@@ -2,5 +2,5 @@ apiVersion: v2
 name: bitcoind
 description: A Helm Chart for Bitcoin Core
 type: application
-version: 1.0.8
+version: 1.0.9
 appVersion: 0.23.0

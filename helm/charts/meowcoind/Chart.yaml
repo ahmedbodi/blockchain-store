@@ -2,5 +2,5 @@ apiVersion: v2
 name: meowcoind
 description: A Helm Chart for Meowcoin Core
 type: application
-version: 1.0.3
+version: 1.0.4
 appVersion: v3.0.4

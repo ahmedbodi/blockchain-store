@@ -2,5 +2,5 @@ apiVersion: v2
 name: catcoind
 description: A Helm Chart for Catcoin Core
 type: application
-version: 1.0.3
+version: 1.0.4
 appVersion: 2.2.0
