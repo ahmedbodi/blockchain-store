@@ -1,0 +1,76 @@
+apiVersion: apps/v1
+kind: StatefulSet
+metadata:
+  name: {{ include "bitcoind.name" . }}
+  namespace: {{ .Values.namespace }}
+  labels:
+    {{- include "bitcoind.labels" . | nindent 4 }}
+spec:
+  replicas: {{ .Values.replicaCount }}
+  serviceName: {{ include "bitcoind.name" . }}-headless
+  selector:
+    matchLabels:
+      {{- include "bitcoind.selectorLabels" . | nindent 6 }}
+  template:
+    metadata:
+      config/checksum: {{ index .Values.configFile "bitcoin.conf" | sha256sum }}
+      {{- with .Values.podAnnotations }}
+      annotations:
+        {{- toYaml . | nindent 8 }}
+      {{- end }}
+      labels:
+        {{- include "bitcoind.selectorLabels" . | nindent 8 }}
+    spec:
+      # this is really important to prevent kubernetes killing the pod unexpectedly
+      # in situations where the standard 30 seconds are not enough for the process to
+      # shutdown gracefully
+      terminationGracePeriodSeconds: {{ .Values.terminationGracePeriodSeconds | default 600 }}
+      containers:
+        - name: {{ include "bitcoind.name" . }}
+          image: {{ include "bitcoind.image" . }}
+          imagePullPolicy: {{ .Values.image.pullPolicy | default "IfNotPresent" }}
+          ports:
+          {{- range $.Values.containerPorts }}
+            - containerPort: {{ .containerPort }}
+              protocol: {{ .protocol | quote }}
+              name: {{ .name | quote }}
+          {{- end }}
+          command: {{ .Values.command.cmd }}
+          args:
+            {{- range .Values.command.args }}
+            - {{ . }}
+            {{- end }}
+
+          {{- if .Values.probesEnabled }}
+          livenessProbe:
+            {{- toYaml .Values.livenessProbe | nindent 12 }}
+          readinessProbe:
+            {{- toYaml .Values.readinessProbe | nindent 12 }}
+          {{- end }}
+
+          resources:
+            {{- toYaml .Values.resources | nindent 12 }}
+
+          volumeMounts:
+            - name: data
+              mountPath: /data
+            - name: config
+              mountPath: /config
+              readOnly: true
+      volumes:
+        - name: data
+          persistentVolumeClaim:
+            claimName: {{ include "bitcoind.name" . }}
+        - name: config
+          configMap:
+            name: {{ template "bitcoind.name" . }}
+
+      {{- with .Values.affinity }}
+      affinity:
+        {{- toYaml . | nindent 8 }}
+      {{- end }}
+
+      {{- with .Values.tolerations }}
+      tolerations:
+        {{- toYaml . | nindent 8 }}
+      {{- end }}

@@ -1,0 +1,7 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: {{ include "catcoind.name" . }}
+  labels: {{ include "catcoind.labels" . | nindent 4 }}
+data:
+{{ toYaml .Values.configFile | indent 2 }}

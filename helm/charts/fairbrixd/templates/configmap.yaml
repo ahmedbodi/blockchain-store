@@ -1,0 +1,7 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: {{ include "fairbrixd.name" . }}
+  labels: {{ include "fairbrixd.labels" . | nindent 4 }}
+data:
+{{ toYaml .Values.configFile | indent 2 }}

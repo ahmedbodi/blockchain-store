@@ -1,0 +1,127 @@
+image:
+  name: ahmedbodi/fairbrix
+  tag: v2.0.2
+  pullPolicy: IfNotPresent # Always
+
+replicaCount: 1
+
+# select a stable worker node of the kubernetes cluster to avoid syncing issues
+nodeSelectorEnabled: false
+nodeSelector:
+  preemptible: "false"
+
+# when using a cloud provided disk with limited input/output capacity, errors and
+# syncing problems may occur. in that situation, one can tweak the CPU and memory
+# to limit the I/O load capacity of the node. once fully synced it is ok to crank
+# these resources up to serve more requests per second.
+# these defaults are a good starting point for a cloud provided standard disk
+# Running the numbers usually takes 5 min with these values
+resources: {}
+
+# stablish what user and what privileges are used to run the litecoin process
+securityContext:
+  enabled: false
+  runAsUser: 100
+  allowPrivilegeEscalation: false
+
+service:
+  type: "ClusterIP"
+  ports:
+    - port: 9332
+      targetPort: 9332
+      protocol: TCP
+      name: rpc-mainnet
+    - port: 28332
+      targetPort: 28332
+      protocol: TCP
+      name: zmq-rawblock
+    - port: 28333
+      targetPort: 28333
+      protocol: TCP
+      name: zmq-rawtax
+    - port: 28334
+      targetPort: 28334
+      protocol: TCP
+      name: zmq-hashblock
+    - port: 28335
+      targetPort: 28335
+      protocol: TCP
+      name: zmq-hashtx
+
+# these are the ports opened in the container
+containerPorts:
+  - containerPort: 9332
+    protocol: TCP
+    name: rpc-mainnet
+  - containerPort: 28332
+    protocol: TCP
+    name: zmq-rawblock
+  - containerPort: 28333
+    protocol: TCP
+    name: zmq-rawtax
+  - containerPort: 28334
+    protocol: TCP
+    name: zmq-hashblock
+  - containerPort: 28335
+    protocol: TCP
+    name: zmq-hashtx
+
+# here you define the options for the node similarly to what you would do in the
+# command line or the litecoin.conf file;
+# -regtest=1 is the default
+command:
+  enabled: true
+  cmd: ["fairbrixd"]
+  args: ["-datadir=/data", "-conf=/config/fairbrix.conf"]
+
+## we can override the litecoin.conf file with these parameters
+# use a generous grace period to avoid long resyncs (rolling forward) at restart
+# when the node receives SIGINT directive from kubernetes, it initiates a propper
+# shutdown process that takes time... 300 seconds seems to be enough time.
+terminationGracePeriodSeconds: 600
+probesEnabled: true
+livenessProbe:
+  exec:
+    command:
+      - fairbrix-cli
+      - getblockcount
+  # use generous initial delay. if the node was NOT propperly shutdown before,
+  # the resync (rolling forward) will last for several hours before it is complete...
+  # during this time, all CLI commands will fail and kubernetes will kill the pod
+  # and cause it to crashloop. 300 seconds seems to be enough in normal conditions
+  initialDelaySeconds: 600
+  periodSeconds: 60
+  timeoutSeconds: 5
+  failureThreshold: 5
+  successThreshold: 1
+
+readinessProbe:
+  exec:
+    command:
+      - fairbrix-cli
+      - getblockcount
+  # use generous initial delay. if the node was NOT propperly shutdown before,
+  # the resync (rolling forward) will last for several hours before it is complete...
+  # during this time, all CLI commands will fail and kubernetes will kill the pod
+  # and cause it to crashloop. 300 seconds seems to be enough in normal conditions
+  initialDelaySeconds: 600
+  periodSeconds: 60
+  timeoutSeconds: 5
+  failureThreshold: 5
+  successThreshold: 1
+
+configFile:
+  fairbrix.conf: |-
+    rpcuser=
+    rpcpassword=
+    rpcbind=0.0.0.0
+    rpcallowip=0.0.0.0/0
+    zmqpubrawblock=tcp://0.0.0.0:28332
+    zmqpubrawtx=tcp://0.0.0.0:28333
+    zmqpubhashblock=tcp://0.0.0.0:28334
+    zmqpubhashblock=tcp://0.0.0.0:28335
+    prune=550
+    nosettings=1
+
+persistence:
+  capacity: "10Gi"
