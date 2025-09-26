@@ -53,7 +53,7 @@ ENV BITBAR_PREFIX=/opt/bitbar-${BITBAR_VERSION}
 RUN git clone --depth 1 --branch ${BITBAR_VERSION} https://github.com/crypto-currency/bitbar /bitbar-${BITBAR_VERSION}
 
 WORKDIR /bitbar-${BITBAR_VERSION}/src
-RUN make -f makefile.unix BDB_INCLUDE_PATH='/opt/db-4.8.30.NC/include/' BDB_LIB_PATH=/opt/db-4.8.30.NC/lib USE_UPNP=- RELEASE=1 \
+RUN make -f makefile.unix BDB_INCLUDE_PATH='/opt/db-4.8.30.NC/include/' BDB_LIB_PATH=/opt/db-4.8.30.NC/lib USE_UPNP=- RELEASE=1 -j 4\
     && mkdir -p ${BITBAR_PREFIX}/bin \
     && cp ./bitbard ${BITBAR_PREFIX}/bin/bitbard \
     && strip ${BITBAR_PREFIX}/bin/bitbard
