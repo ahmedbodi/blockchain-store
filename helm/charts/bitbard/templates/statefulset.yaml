@@ -1,0 +1,76 @@
+apiVersion: apps/v1
+kind: StatefulSet
+metadata:
+  name: {{ include "bitbard.name" . }}
+  namespace: {{ .Values.namespace }}
+  labels:
+    {{- include "bitbard.labels" . | nindent 4 }}
+spec:
+  replicas: {{ .Values.replicaCount }}
+  serviceName: {{ include "bitbard.name" . }}-headless
+  selector:
+    matchLabels:
+      {{- include "bitbard.selectorLabels" . | nindent 6 }}
+  template:
+    metadata:
+      config/checksum: {{ index .Values.configFile "bitbar.conf" | sha256sum }}
+      {{- with .Values.podAnnotations }}
+      annotations:
+        {{- toYaml . | nindent 8 }}
+      {{- end }}
+      labels:
+        {{- include "bitbard.selectorLabels" . | nindent 8 }}
+    spec:
+      # this is really important to prevent kubernetes killing the pod unexpectedly
+      # in situations where the standard 30 seconds are not enough for the process to
+      # shutdown gracefully
+      terminationGracePeriodSeconds: {{ .Values.terminationGracePeriodSeconds | default 600 }}
+      containers:
+        - name: {{ include "bitbard.name" . }}
+          image: {{ include "bitbard.image" . }}
+          imagePullPolicy: {{ .Values.image.pullPolicy | default "IfNotPresent" }}
+          ports:
+          {{- range $.Values.containerPorts }}
+            - containerPort: {{ .containerPort }}
+              protocol: {{ .protocol | quote }}
+              name: {{ .name | quote }}
+          {{- end }}
+          command: {{ .Values.command.cmd }}
+          args:
+            {{- range .Values.command.args }}
+            - {{ . }}
+            {{- end }}
+
+          {{- if .Values.probesEnabled }}
+          livenessProbe:
+            {{- toYaml .Values.livenessProbe | nindent 12 }}
+          readinessProbe:
+            {{- toYaml .Values.readinessProbe | nindent 12 }}
+          {{- end }}
+
+          resources:
+            {{- toYaml .Values.resources | nindent 12 }}
+
+          volumeMounts:
+            - name: data
+              mountPath: /data
+            - name: config
+              mountPath: /config
+              readOnly: true
+      volumes:
+        - name: data
+          persistentVolumeClaim:
+            claimName: {{ include "bitbard.name" . }}
+        - name: config
+          configMap:
+            name: {{ template "bitbard.name" . }}
+
+      {{- with .Values.affinity }}
+      affinity:
+        {{- toYaml . | nindent 8 }}
+      {{- end }}
+
+      {{- with .Values.tolerations }}
+      tolerations:
+        {{- toYaml . | nindent 8 }}
+      {{- end }}

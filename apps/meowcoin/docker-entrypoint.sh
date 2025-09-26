@@ -2,24 +2,24 @@
 set -e
 
 if [ $(echo "$1" | cut -c1) = "-" ]; then
-  echo "$0: assuming arguments for telestaid"
+  echo "$0: assuming arguments for meowcoind"
 
-  set -- telestaid "$@"
+  set -- meowcoind "$@"
 fi
 
-if [ $(echo "$1" | cut -c1) = "-" ] || [ "$1" = "telestaid" ]; then
-  mkdir -p "$TELESTAI_DATA"
-  chmod 700 "$TELESTAI_DATA"
-  chown -R catcoin "$TELESTAI_DATA"
+if [ $(echo "$1" | cut -c1) = "-" ] || [ "$1" = "meowcoind" ]; then
+  mkdir -p "$MEOWCOIN_DATA"
+  chmod 700 "$MEOWCOIN_DATA"
+  chown -R meowcoin "$MEOWCOIN_DATA"
 
-  echo "$0: setting data directory to $TELESTAI_DATA"
+  echo "$0: setting data directory to $MEOWCOIN_DATA"
 
-  set -- "$@" -datadir="$TELESTAI_DATA"
+  set -- "$@" -datadir="$MEOWCOIN_DATA"
 fi
 
-if [ "$1" = "telestaid" ] || [ "$1" = "telestai-cli" ]; then
+if [ "$1" = "meowcoind" ] || [ "$1" = "meowcoin-cli" ]; then
   echo
-  exec su-exec telestai "$@"
+  exec su-exec meowcoin "$@"
 fi
 
 echo

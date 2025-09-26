@@ -10,7 +10,7 @@ fi
 if [ $(echo "$1" | cut -c1) = "-" ] || [ "$1" = "telestaid" ]; then
   mkdir -p "$TELESTAI_DATA"
   chmod 700 "$TELESTAI_DATA"
-  chown -R catcoin "$TELESTAI_DATA"
+  chown -R telestai "$TELESTAI_DATA"
 
   echo "$0: setting data directory to $TELESTAI_DATA"
 

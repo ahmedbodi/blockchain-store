@@ -1,0 +1,6 @@
+apiVersion: v2
+name: bitbard
+description: A Helm Chart for BitBar
+type: application
+version: 1.0.0
+appVersion: v0.8.1.2
