@@ -31,40 +31,12 @@ service:
       targetPort: 9344
       protocol: TCP
       name: rpc-mainnet
-    - port: 28332
-      targetPort: 28332
-      protocol: TCP
-      name: zmq-rawblock
-    - port: 28333
-      targetPort: 28333
-      protocol: TCP
-      name: zmq-rawtax
-    - port: 28334
-      targetPort: 28334
-      protocol: TCP
-      name: zmq-hashblock
-    - port: 28335
-      targetPort: 28335
-      protocol: TCP
-      name: zmq-hashtx
 
 # these are the ports opened in the container
 containerPorts:
   - containerPort: 9932
     protocol: TCP
     name: rpc-mainnet
-  - containerPort: 28332
-    protocol: TCP
-    name: zmq-rawblock
-  - containerPort: 28333
-    protocol: TCP
-    name: zmq-rawtax
-  - containerPort: 28334
-    protocol: TCP
-    name: zmq-hashblock
-  - containerPort: 28335
-    protocol: TCP
-    name: zmq-hashtx
 
 # here you define the options for the node similarly to what you would do in the
 # command line or the litecoin.conf file;
@@ -113,15 +85,11 @@ readinessProbe:
   successThreshold: 1
 
 configFile:
-  catcoin.conf: |-
+  bitbar.conf: |-
     rpcuser=
     rpcpassword=
     rpcbind=0.0.0.0
     rpcallowip=0.0.0.0/0
-    zmqpubrawblock=tcp://0.0.0.0:28332
-    zmqpubrawtx=tcp://0.0.0.0:28333
-    zmqpubhashblock=tcp://0.0.0.0:28334
-    zmqpubhashblock=tcp://0.0.0.0:28335
     prune=550
     nosettings=1
 
