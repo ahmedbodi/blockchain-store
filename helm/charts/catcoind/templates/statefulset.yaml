@@ -13,11 +13,11 @@ spec:
       {{- include "catcoind.selectorLabels" . | nindent 6 }}
   template:
     metadata:
-      config/checksum: {{ index .Values.configFile "catcoin.conf" | sha256sum }}
-      {{- with .Values.podAnnotations }}
       annotations:
-        {{- toYaml . | nindent 8 }}
-      {{- end }}
+        config/checksum: {{ index .Values.configFile "catcoin.conf" | sha256sum }}
+        {{- with .Values.podAnnotations }}
+        {{- toYaml . | nindent 6 }}
+        {{- end }}
       labels:
         {{- include "catcoind.selectorLabels" . | nindent 8 }}
     spec:

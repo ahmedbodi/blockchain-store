@@ -13,11 +13,11 @@ spec:
       {{- include "bitcoind.selectorLabels" . | nindent 6 }}
   template:
     metadata:
-      config/checksum: {{ index .Values.configFile "bitcoin.conf" | sha256sum }}
-      {{- with .Values.podAnnotations }}
       annotations:
-        {{- toYaml . | nindent 8 }}
-      {{- end }}
+        config/checksum: {{ index .Values.configFile "bitcoin.conf" | sha256sum }}
+        {{- with .Values.podAnnotations }}
+        {{- toYaml . | nindent 6 }}
+        {{- end }}
       labels:
         {{- include "bitcoind.selectorLabels" . | nindent 8 }}
     spec:
